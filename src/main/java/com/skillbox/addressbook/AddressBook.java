@@ -1,5 +1,7 @@
 package com.skillbox.addressbook;
 
+import java.util.Locale;
+
 public class AddressBook {
     private static final int MAX_CONTACTS = 100;
     private static final int NOT_FOUND = -1;
@@ -42,15 +44,35 @@ public class AddressBook {
         return false;
     }
 
-    @Override
-    public String toString() {
-        String result = "";
+    public String searchByName(String query) {
+        String normalizedQuery = query.trim().replaceAll("\\s+", " ").toLowerCase(Locale.ROOT);
+        if (normalizedQuery.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < contacts.length; i++) {
-            if (contacts[i] != null) {
-                result += "ID: " + i + "\n";
-                result += contacts[i].toString() + "\n\n";
+            if (contacts[i] != null
+                    && contacts[i].getFullName().toLowerCase(Locale.ROOT).contains(normalizedQuery)) {
+                appendContact(result, i);
             }
         }
-        return result;
+        return result.toString();
+    }
+
+    private void appendContact(StringBuilder result, int id) {
+        result.append("ID: ").append(id).append('\n')
+                .append(contacts[id]).append("\n\n");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < contacts.length; i++) {
+            if (contacts[i] != null) {
+                appendContact(result, i);
+            }
+        }
+        return result.toString();
     }
 }

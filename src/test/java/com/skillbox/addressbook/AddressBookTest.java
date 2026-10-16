@@ -44,4 +44,18 @@ class AddressBookTest {
         assertTrue(book.removeContact("42"));
         assertTrue(book.addContact(contact("Лишний контакт")));
     }
+
+    @Test
+    void searchesByPartOfNameIgnoringCaseAndExtraSpaces() {
+        AddressBook book = new AddressBook();
+        book.addContact(contact("Иван Иванов"));
+        book.addContact(contact("Анна Петрова"));
+        book.addContact(contact("Иван Сидоров"));
+
+        String matches = book.searchByName("  иВаН  ");
+        assertTrue(matches.contains("ID: 0"));
+        assertTrue(matches.contains("ID: 2"));
+        assertFalse(matches.contains("ID: 1"));
+        assertEquals("", book.searchByName("   "));
+    }
 }

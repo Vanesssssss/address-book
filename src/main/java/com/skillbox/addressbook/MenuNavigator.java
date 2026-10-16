@@ -25,6 +25,9 @@ public class MenuNavigator {
                     printContacts();
                     break;
                 case 4:
+                    searchContacts();
+                    break;
+                case 5:
                     exit();
                     break;
             }
@@ -34,6 +37,16 @@ public class MenuNavigator {
     private void printContacts() {
         System.out.println("Список контактов: ");
         System.out.print(addressBook);
+    }
+
+    private void searchContacts() {
+        System.out.print("Введите имя или его часть: ");
+        String matches = addressBook.searchByName(scanner.nextLine());
+        if (matches.isEmpty()) {
+            System.out.println("Контакты не найдены\n");
+        } else {
+            System.out.print(matches);
+        }
     }
 
     private void removeContact() {
@@ -94,11 +107,12 @@ public class MenuNavigator {
         System.out.println("1 - добавить/обновить контакт");
         System.out.println("2 - удалить контакт");
         System.out.println("3 - список контактов");
-        System.out.println("4 - выход");
-        System.out.print("Введите 1..4: ");
+        System.out.println("4 - поиск по имени");
+        System.out.println("5 - выход");
+        System.out.print("Введите 1..5: ");
         String input = scanner.nextLine();
 
-        for (int option = 1; option <= 4; option++) {
+        for (int option = 1; option <= 5; option++) {
             if (String.valueOf(option).equals(input)) {
                 return option;
             }
